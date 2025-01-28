@@ -1,0 +1,184 @@
+/* 웹폰트선언부 */
+@font-face {
+    font-family: 'ghanachoco';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ghanachoco.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Chosunilbo_myungjo';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Chosunilbo_myungjo.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Chosunilbo_myungjo', sans-serif;
+    margin: 0; /* 기본 여백 제거 */
+    padding: 0; /* 기본 여백 제거 */
+}
+
+.header {
+    display: flex;
+    justify-content: flex-end; /* 오른쪽 정렬 */
+    background-color: #333;
+    padding: 10px;
+}
+
+.login-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.login-button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    white-space: nowrap; /* 텍스트를 한 줄로 유지 */
+}
+
+.login-button:hover {
+    background-color: #45a049;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 20.14cm;
+    margin: auto;
+    padding: 0 1em;
+}
+
+.left-panel, .right-panel {
+    flex: 1;
+    padding: 1em;
+}
+
+h1, p, button, textarea, input {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+h1 {
+    font-family: 'ghanachoco', sans-serif; /* 폰트 패밀리에 'ghanachoco' 추가 */
+    font-size: 40px;
+    color: #fff; /* 텍스트 색상 흰색으로 설정 */
+}
+
+p {
+    font-size: 20px;
+    color: #fff; /* 텍스트 색상 흰색으로 설정 */
+}
+
+.input-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1em;
+}
+
+.rounded-rect, .circle-button.attach {
+    margin: 0;
+}
+
+.circle-button.attach {
+    margin-left: 1em; /* 버튼 사이의 간격 조정 */
+}
+
+.rounded-button {
+    background-color: #767171;
+    color: white;
+    padding: 0.5em 0;
+    font-size: 32px;
+    border: none;
+    border-radius: 30px;
+    font-family: 'ghanachoco', sans-serif;
+}
+
+.social-buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.circle-button {
+    border: none;
+    border-radius: 50%;
+    color: white;
+    width: 1.89cm;
+    height: 1.89cm;
+    font-size: 18px;
+}
+
+.yellow { background-color: #FFD966; }
+.green { background-color: #70AD47; }
+.blue { background-color: #2E75B6; }
+.pink { background-color: #CB198B; }
+
+.rounded-rect {
+    background-color: #AFABAB;
+    color: white;
+    padding: 0.5em 0;
+    font-size: 24px;
+    border-radius: 30px;
+    border: none;
+    font-family: 'ghanachoco', sans-serif;
+}
+
+.attach {
+    background-color: #767171;
+    width: 2.3cm; /* 너비와 높이를 동일하게 설정 */
+    height: 1.8cm;
+    padding: 0; /* 내부 여백을 제거하여 텍스트가 버튼 크기에 영향을 주지 않도록 함 */
+    border-radius: 50%; /* 원형 모양을 유지하기 위한 설정 */
+    display: flex; /* Flexbox를 사용하여 */
+    align-items: center; /* 내부 텍스트를 중앙에 위치시킴 */
+    justify-content: center;
+    font-family: 'Chosunilbo_myungjo', sans-serif;
+    font-size: 15px;
+}
+
+textarea {
+    border: 1px solid #ccc;
+    padding: 0.5em;
+    text-align: left; /* 텍스트를 왼쪽 정렬로 설정 */
+    height: 233px; /* 기본 높이 설정 */
+}
+
+textarea::placeholder {
+    color: #aaa;
+    text-align: left; /* 플레이스홀더 텍스트도 왼쪽 정렬로 설정 */
+}
+
+input[type="file"] {
+    border: 1px solid #ccc;
+    padding: 0.5em;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .left-panel, .right-panel {
+        width: auto;
+    }
+}
+
+/* 모바일 화면에서 단 사이에 1pt 라인 추가 */
+@media (max-width: 768px) {
+    .left-panel {
+        border-bottom: 1pt solid #ccc; /* 왼쪽 패널 하단에 선 추가 */
+    }
+}

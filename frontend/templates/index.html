@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI 예측</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="header">
+        <div class="login-buttons" id="loginButtons">
+            <!-- 로그인 상태에 따라 버튼이 변경됩니다. -->
+        </div>
+    </div>
+    <div class="container">
+        <div class="left-panel">
+            <h1>이 글의 MBTI는?</h1>
+            <hr>
+            <p>자기소개글을 입력하시면 <strong>당신의 글</strong>에서 나타나는 <strong>MBTI 특성과 직업</strong>을 추천해 드립니다!</p>
+            <hr>
+            <button class="rounded-button" id="predictButton">결과 확인</button>
+            <hr>
+            <div class="share">
+                <p>공유하기</p>
+                <div class="social-buttons">
+                    <button class="circle-button yellow">카</button>
+                    <button class="circle-button green">네</button>
+                    <button class="circle-button blue">페</button>
+                    <button class="circle-button pink">인</button>
+                </div>
+            </div>
+        </div>
+        <div class="right-panel">
+            <div class="input-section">
+                <button class="rounded-rect" id="textButton">텍스트 기재</button>
+                <button class="circle-button attach" id="attachButton">첨부</button>
+            </div>
+            <textarea id="userInput" placeholder="여기에 입력해주세요."></textarea>
+            <hr>
+            <div class="input-section">
+                <button class="rounded-rect" id="pdfButton">PDF 게재</button>
+                <button class="circle-button attach" id="fileButton">첨부</button>
+            </div>
+            <input type="file" accept=".pdf" id="fileInputButton">
+        </div>
+    </div>
+
+    <script>
+        const predictButton = document.getElementById('predictButton');
+        const textButton = document.getElementById('textButton');
+        const pdfButton = document.getElementById('pdfButton');
+        const attachButton = document.getElementById('attachButton');
+        const fileButton = document.getElementById('fileButton');
+        const fileInputButton = document.getElementById('fileInputButton');
+        const userInput = document.getElementById('userInput');
+
+        const originalColor = predictButton.style.backgroundColor;
+
+        function setButtonStyle(button, color) {
+            button.style.backgroundColor = color;
+            button.style.cursor = 'pointer';
+        }
+
+        function resetButtonStyle(button) {
+            button.style.backgroundColor = originalColor;
+        }
+
+        predictButton.addEventListener('mouseover', () => {
+            setButtonStyle(predictButton, '#4CAF50');
+        });
+
+        predictButton.addEventListener('mouseout', () => {
+            resetButtonStyle(predictButton);
+        });
+
+        predictButton.addEventListener('click', async () => {
+            const textData = userInput.value;
+            const file = fileInputButton.files[0];
+
+            const formData = new FormData();
+            formData.append('text_data', textData);
+            if (file) {
+                formData.append('file', file);
+            }
+
+            try {
+                // 예측 요청을 보냅니다.
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                // 예측 요청이 성공하면 result.html 페이지로 이동합니다.
+                if (response.ok) {
+                    const result = await response.json();
+                    window.location.href = result.redirect;
+                }
+            } catch (error) {
+                console.error('Prediction failed:', error);
+            }
+        });
+
+        // Flask 템플릿 엔진을 사용하여 로그인 상태를 안전하게 JavaScript로 전달합니다.
+        const isLoggedIn = {{ 'true' if session.get('user_id') else 'false' | tojson }};
+        const userId = {{ session.get('user_id', '') | tojson }};
+        const loginButtons = document.getElementById('loginButtons');
+
+        console.log('isLoggedIn:', isLoggedIn);
+        console.log('userId:', userId);
+
+        // 로그인 상태에 따라 버튼을 동적으로 변경합니다.
+        if (isLoggedIn === true) {
+            loginButtons.innerHTML = `
+                <button class="login-button" onclick="window.location.href='/profile'">내 프로필</button>
+                <button class="login-button" onclick="window.location.href='/logout'">로그아웃</button>
+            `;
+        } else {
+            loginButtons.innerHTML = `
+                <button class="login-button" onclick="window.location.href='/login'">로그인</button>
+                <button class="login-button" onclick="window.location.href='/signup'">회원가입</button>
+            `;
+        }
+    </script>
+</body>
+</html>

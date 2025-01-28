@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            margin: 20px;
+        }
+        .profile-info div {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="login-buttons">
+            <a href="{{ url_for('user.logout') }}" class="login-button">로그아웃</a>
+        </div>
+    </div>
+    <div class="container">
+        <h1>내 프로필</h1>
+        <div class="profile-info" id="profileInfo">
+            <div>Email: <span id="email">{{ user.email }}</span></div>
+            <div>Age: <span id="age">{{ user.age }}</span></div>
+            <div>Gender: <span id="gender">{{ user.gender }}</span></div>
+            <div>Department: <span id="department">{{ user.department }}</span></div>
+        </div>
+        <button id="editButton">수정하기</button>
+        <button id="saveButton" style="display:none;">확인</button>
+    </div>
+
+    <script>
+        document.getElementById('editButton').addEventListener('click', function () {
+            document.getElementById('editButton').style.display = 'none';
+            document.getElementById('saveButton').style.display = 'inline-block';
+
+            let email = document.getElementById('email').innerText;
+            let age = document.getElementById('age').innerText;
+            let gender = document.getElementById('gender').innerText;
+            let department = document.getElementById('department').innerText;
+
+            document.getElementById('email').innerHTML = `<input type="text" id="emailInput" value="${email}">`;
+            document.getElementById('age').innerHTML = `<input type="text" id="ageInput" value="${age}">`;
+            document.getElementById('gender').innerHTML = `<select id="genderInput">
+                <option value="남자" ${gender === '남자' ? 'selected' : ''}>남자</option>
+                <option value="여자" ${gender === '여자' ? 'selected' : ''}>여자</option>
+                <option value="비공개" ${gender === '비공개' ? 'selected' : ''}>비공개</option>
+            </select>`;
+            document.getElementById('department').innerHTML = `<input type="text" id="departmentInput" value="${department}">`;
+        });
+
+        document.getElementById('saveButton').addEventListener('click', async function () {
+            const email = document.getElementById('emailInput').value;
+            const age = document.getElementById('ageInput').value;
+            const gender = document.getElementById('genderInput').value;
+            const department = document.getElementById('departmentInput').value;
+
+            const response = await fetch('/profile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    age: age,
+                    gender: gender,
+                    department: department
+                }),
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert('Failed to update profile');
+            }
+        });
+    </script>
+</body>
+</html>

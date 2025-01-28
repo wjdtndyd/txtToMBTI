@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>추가정보입력</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .centered-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .input-group label {
+            flex: 1;
+        }
+        .input-group input, .input-group select {
+            flex: 2;
+            margin-left: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="centered-form">
+        <div class="form-container">
+            <h1 class="text-xl font-bold text-center mb-4">추가정보입력</h1>
+            <div class="input-group">
+                <label for="email">이메일</label>
+                <input type="email" id="email" placeholder="Enter your email">
+            </div>
+            <div class="input-group">
+                <label for="age">나이</label>
+                <input type="number" id="age" placeholder="Enter your age">
+            </div>
+            <div class="input-group">
+                <label for="gender">성별</label>
+                <select id="gender">
+                    <option value="비공개">비공개</option> <!-- 기본값을 비공개로 설정 -->
+                    <option value="남자">남자</option>
+                    <option value="여자">여자</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="department">학과</label>
+                <input type="text" id="department" placeholder="Enter your department">
+            </div>
+            <div class="flex justify-center mt-4">
+                <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2" id="registerButton">가입</button>
+                <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" id="backButton">뒤로</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('registerButton').addEventListener('click', async () => {
+            const email = document.getElementById('email').value;
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+            const department = document.getElementById('department').value;
+
+            const formData = new FormData();
+            formData.append('email', email);
+            formData.append('age', age);
+            formData.append('gender', gender);
+            formData.append('department', department);
+
+            const response = await fetch('/signup_step2', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const result = await response.json();
+            alert(result.message);  // 메시지 박스로 출력
+            if (result.redirect) {
+                window.location.href = result.redirect;
+            }
+        });
+
+        document.getElementById('backButton').addEventListener('click', () => {
+            window.history.back();
+        });
+    </script>
+</body>
+</html>

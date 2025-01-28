@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI 결과</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .job-section p {
+            color: #000; /* 텍스트 색상을 검정색으로 설정 */
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="login-buttons" id="loginButtons">
+            <!-- 로그인 상태에 따라 버튼이 변경됩니다. -->
+        </div>
+    </div>
+    <div class="container">
+        <div class="left-panel">
+            <h1>이 글의 MBTI는?</h1>
+            <hr>
+            <button class="mbti-button" onclick="location.href='https://namu.wiki/w/{{ result }}'">{{ result }}</button>
+            <p class="core-keyword-title">핵심키워드</p>
+            <p class="core-keywords enfp">열정적, 창의적</p>
+            <hr>
+        </div>
+        <div class="right-panel">
+            <p class="recommended-job-title">추천직업</p>
+            <hr>
+            <div class="job-section">
+                {% if jobs %}
+                    {% for job in jobs %}
+                        <p class="job">{{ job }}</p>
+                    {% endfor %}
+                {% else %}
+                    <p class="job">추천 직업이 없습니다.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
